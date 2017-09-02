@@ -7,6 +7,28 @@
 #idsplash .container img{
   vertical-align: middle;
 }
+#idmaps .container{
+  background: url('../img/adsKXLw.png') top center no-repeat;
+  height: 1000px;
+}
+#idmaps .wrapper {    
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+#idmaps .container .wrapper .row {
+  max-width: 420px;
+  padding: 30px 38px 66px;
+  margin: 0 auto;
+  background-color: #eee;
+  border: 3px dotted rgba(0,0,0,0.1);  
+}
+
+#map{
+  width: 100%;
+  height: 500px;
+}
+
 #idhome .container{
   background: url('../img/adsKXLw.png') top center no-repeat;
   height: 1000px;
@@ -15,7 +37,6 @@
   margin-top: 80px;
   margin-bottom: 20px;
 }
-
 .form-signin {
   max-width: 420px;
   padding: 30px 38px 66px;

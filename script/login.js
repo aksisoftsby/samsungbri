@@ -13,7 +13,7 @@ $("#btnlogin").click(function () {
     // store database
     store.set("email", BriLogin.email);
     // show maps
-    $("#idmaps").slideDown();
+    $("#idmaps").slideDown(); // show
     BriMap.init();
   }
   return false;
