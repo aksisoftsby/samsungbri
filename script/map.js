@@ -5,7 +5,20 @@ var BriMap = {
   long: "longitude",
   lattitude: 0,
   longitude: 0,
+  infowindow: {},
+  createMarker: function createMarker(place) {
+    placeLoc = place.geometry.location;
+    marker = new google.maps.Marker({
+      map: map,
+      position: place.geometry.location
+    });
+    google.maps.event.addListener(marker, 'click', function () {
+      BriMap.infowindow.setContent(place.name);
+      BriMap.infowindow.open(map, this);
+    });
+  },
   init: function () {
+    this.infowindow = new google.maps.InfoWindow();
     if (navigator.geolocation) {
       watchId = navigator.geolocation.watchPosition(
         // success function
@@ -16,27 +29,58 @@ var BriMap = {
             store.set(BriMap.lat, BriMap.lattitude);
             store.set(BriMap.long, BriMap.longitude);
             $("#map").html("Mencari Bank BRI terdekat ...");
-            $.ajax({
-              'url': "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
-              'data': {
-                location: BriMap.lattitude + ',' + BriMap.longitude,
-                radius: 500,
-                type: "bank",
-                keyword: "Bank BRI",
-                key: "AIzaSyA4ER1iJKnhXLeK1QLwHl-1cySxDpdHSWs",
-                language: "id",
-              },
-              'success': function (data) {
-                d = data;
-                $("#map").html(JSON.stringify(data));
-                console.log(d);
-              },
-              error: function (data) {
-                
-              },
-              dataType: 'json',
-              type: 'get'
+            lokasinasabah = new google.maps.LatLng(BriMap.lattitude, BriMap.longitude);
+            map = new google.maps.Map(document.getElementById('map'), {
+              center: lokasinasabah,
+              zoom: 14
             });
+            var request = {
+              location: lokasinasabah,
+              radius: '1000',
+              // types: ['bank', 'atm'],
+              // keyword: "bank bri",
+              // name: "bank bri",
+              language: "id",
+              query: "'BANK BRI' or 'ATM BRI'"
+            };
+            service = new google.maps.places.PlacesService(map);
+            // service.nearbySearch(request,
+            service.textSearch(request,
+              function (results, status) {
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                  console.log(results);
+                  for (var i = 0; i < results.length; i++) {
+                    var place = results[i];
+                    BriMap.createMarker(results[i]);
+                  }
+                }
+              }
+            );
+            /**
+             $.ajax({
+             'url': "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+             'data': {
+             location: BriMap.lattitude + ',' + BriMap.longitude,
+             radius: 500,
+             type: "bank",
+             keyword: "Bank BRI",
+             key: "AIzaSyA4ER1iJKnhXLeK1QLwHl-1cySxDpdHSWs",
+             language: "id",
+             },
+             'success': function (data) {
+             d = data;
+             // $("#map").html(JSON.stringify(data));
+             console.log(d);
+             },
+             error: function (data) {
+             
+             },
+             dataType: 'JSONP',
+             crossDomain: true,
+             cache: false,
+             type: 'GET'
+             });
+             **/
             document.getElementById('locationInfo').innerHTML = 'Latitude: '
               + position.coords.latitude +
               '<br/>Longitude: ' + position.coords.longitude;
