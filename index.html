@@ -13,10 +13,7 @@ and open the template in the editor.
     <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
     <link rel="stylesheet" href="css/custom.css" />
   </head>
-  <body onload="setTimeout(function () {
-        $('#idsplash').slideUp('500');
-        $('#idhome').slideDown('1000');
-      }, 2000);">
+  <body>
     <div id="idsplash">
       <div class="container">
         <img src="img/logo-bank-bri.png" class="img-responsive" />
@@ -29,16 +26,23 @@ and open the template in the editor.
             <img src="img/logo-bank-bri.png" class="img-responsive" />
             <h3 class="form-signin-heading">Silahkan login</h3>
             <hr class="colorgraph"><br>
-            <input type="text" class="form-control" name="email" placeholder="Email" required="" autofocus="" />
-            <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
-            <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" type="Submit">Login</button>  			
+            <input id="inputemail" value="test_any_email@domain.com" type="email" class="form-control" name="email" placeholder="Email" required="" autofocus="" />
+            <input id="inputpassword" value="password" type="password" class="form-control" name="password" placeholder="Password" required=""/>
+            <button id="btnlogin" class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" type="Submit">Login</button>
           </form>			
         </div>
       </div>
     </div>
+    <div id="idmaps" style="display: none;">
+      <div id="map"></div>
+    </div>
   </body>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4ER1iJKnhXLeK1QLwHl-1cySxDpdHSWs&v=3.20&sensor=false" async defer></script>
   <script type="text/javascript" src="js/lib.js"></script>
   <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <script type="text/javascript" src="script/var.js"></script>
+  <script type="text/javascript" src="script/map.js"></script>
+  <script type="text/javascript" src="script/login.js"></script>
+  <script type="text/javascript" src="script/start.js"></script>
 </html>
