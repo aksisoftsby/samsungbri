@@ -1,3 +1,22 @@
+
+// where	φ is latitude, λ is longitude, R is earth’s radius (mean radius = 6,371km);
+// note that angles need to be in radians to pass to trig functions!
+
+/**
+ R = 6371e3; // metres
+ φ1 = lat1.toRadians();
+ φ2 = lat2.toRadians();
+ Δφ = (lat2 - lat1).toRadians();
+ Δλ = (lon2 - lon1).toRadians();
+ 
+ a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+ Math.cos(φ1) * Math.cos(φ2) *
+ Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+ c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+ d = R * c;
+ **/
+
+
 var BriMap = {
   map: {},
   watchId: {},
@@ -21,6 +40,16 @@ var BriMap = {
         anchor: new google.maps.Point(0, 0) // anchor
       }
     });
+    /**
+     dist = this.getDistance(
+     this.lattitude, place.geometry.location.lat(),
+     this.longitude, place.geometry.location.lng()
+     );
+     **/
+    dist = geolib.getDistance(
+      {latitude: this.lattitude, longitude: this.longitude},
+      {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng()}
+    );
     k = parseFloat(geolib.getDistance(
       {latitude: this.lattitude, longitude: this.longitude},
       {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng()}
@@ -29,10 +58,26 @@ var BriMap = {
       place.formatted_address + "<br />" +
       "Jarak: " + (k >= 1000 ? parseFloat(k / 1000).toFixed(2) + " Km" : k + " m")
       ;
+    // console.log(BriMap.setContent);
     google.maps.event.addListener(BriMap.marker[i], 'click', function () {
       BriMap.infowindow.setContent(BriMap.setContent[place.id]);
       BriMap.infowindow.open(BriMap.map, this);
     });
+  },
+  rad: function (x) {
+    return x * Math.PI / 180;
+  },
+  getDistance: function (lat1, lat2, long1, long2) {
+    R = 6371e3; // metres
+    φ1 = this.rad(lat1);
+    φ2 = this.rad(lat2);
+    λ1 = this.rad(long1);
+    λ2 = this.rad(long2);
+
+    x = Math.round((λ2 - λ1) * Math.cos((φ1 + φ2) / 2) * R);
+    y = Math.round((φ2 - φ1) * R);
+
+    return {est: x, nord: y};
   },
   init: function () {
     if (navigator.geolocation) {
@@ -58,6 +103,9 @@ var BriMap = {
             var request = {
               location: lokasinasabah,
               radius: '1000',
+              // types: ['bank', 'atm'],
+              // keyword: "bank bri",
+              // name: "bank bri",
               language: "id",
               query: "'BANK BRI' or 'ATM BRI'"
             };
@@ -75,6 +123,31 @@ var BriMap = {
                 }
               }
             );
+            /**
+             $.ajax({
+             'url': "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+             'data': {
+             location: BriMap.lattitude + ',' + BriMap.longitude,
+             radius: 500,
+             type: "bank",
+             keyword: "Bank BRI",
+             key: "AIzaSyA4ER1iJKnhXLeK1QLwHl-1cySxDpdHSWs",
+             language: "id",
+             },
+             'success': function (data) {
+             d = data;
+             // $("#map").html(JSON.stringify(data));
+             console.log(d);
+             },
+             error: function (data) {
+             
+             },
+             dataType: 'JSONP',
+             crossDomain: true,
+             cache: false,
+             type: 'GET'
+             });
+             **/
             document.getElementById('locationInfo').innerHTML = 'Latitude: '
               + position.coords.latitude +
               '<br/>Longitude: ' + position.coords.longitude;
@@ -101,5 +174,11 @@ var BriMap = {
         document.getElementById('locationInfo').innerHTML = 'Geolocation is not supported.';
       }
     },
+  createmap: function () {
+    this.map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 8
+    });
+  }
 }
 
