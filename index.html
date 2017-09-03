@@ -17,6 +17,7 @@ and open the template in the editor.
     <div id="idsplash">
       <div class="container">
         <img src="img/logo-bank-bri.png" class="img-responsive" />
+        <img src="img/ban.jpg" class="img-responsive" />
       </div>
     </div>
     <div id="idhome" style="display: none;">
@@ -29,6 +30,7 @@ and open the template in the editor.
             <input id="inputemail" value="test_any_email@domain.com" type="email" class="form-control" name="email" placeholder="Email" required="" autofocus="" />
             <input id="inputpassword" value="password" type="password" class="form-control" name="password" placeholder="Password" required=""/>
             <button id="btnlogin" class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" type="Submit">Login</button>
+            <p><small>Aplikasi ini adalah sebuah prototype. Data hanya contoh, login dengan email apa saja</small></p>
           </form>			
         </div>
       </div>
@@ -41,6 +43,33 @@ and open the template in the editor.
             <div id="map">Mencari Lokasi ...</div>
             <div id="listmap"></div>
             <div id="locationInfo" style="display: none"></div>
+            <p><small>Data alamat Bank dan ATM dari Google Maps API, 
+                update nomor antrian dengan parkir (<b>sekarang random</b>) 
+                dengan menggunakan id tempat bank dari Google Maps</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="idbook" style="display: none;">
+      <div class="container">
+        <div class="wrapper">
+          <div class="row">
+            <div id="bookdetail"></div>
+            <a class="btn-tujuan btn btn-success btn-sm btn-block">Jadikan tujuan di Google Maps</a>
+            <div class="clearfix"></div>
+            <div class="col-xs-12">
+              <br />
+              <p><b>Qrcode</b></p>
+              <div id="divbook_qrcode"></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-xs-12">
+              <br />
+              <p><b>Barcode Parking</b></p>
+              <svg id="divbook_barcode"></svg>
+            </div>
+            <div class="clearfix"></div>
+            <a onclick="BriBook.backmaps();" class="btn btn-info btn-sm btn-block">Kembali ke Maps Bank BRI</a>
           </div>
         </div>
       </div>
@@ -50,8 +79,11 @@ and open the template in the editor.
   <script type="text/javascript" src="js/lib.js"></script>
   <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/qrcode.js"></script>
+  <script type="text/javascript" src="barcode/JsBarcode.all.min.js"></script>
   <script type="text/javascript" src="script/var.js"></script>
   <script type="text/javascript" src="script/map.js"></script>
+  <script type="text/javascript" src="script/book.js"></script>
   <script type="text/javascript" src="script/login.js"></script>
   <script type="text/javascript" src="script/start.js"></script>
 </html>

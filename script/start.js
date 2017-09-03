@@ -4,13 +4,14 @@ var BriStart = {
   init: function () {
     $(document).ready(function () {
       setTimeout(function () {
-        $('#idsplash').slideUp('500');
+        $('#idsplash').slideUp();
         if (store.isSet("email")) {
-          BriMap.init();
-          $('#idmaps').slideDown('1000');
+          // BriMap.init();
+          // $('#idmaps').slideDown('1000');
         } else {
-          $('#idhome').slideDown('1000');
+          // $('#idhome').slideDown('1000');
         }
+        $('#idhome').slideDown();
       }, 2000);
     })
   }

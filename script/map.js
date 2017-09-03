@@ -8,6 +8,7 @@ var BriMap = {
   infowindow: {},
   setContent: {},
   marker: {},
+  places: {},
   listdata: {
     me: [],
     bank: [],
@@ -16,13 +17,12 @@ var BriMap = {
   createMarker: function (place, i) {
     // console.log(place);
     if (place.types[0] == "atm") {
-      this.listdata.atm.push(place);
+      this.listdata.atm[i] = place;
     }
     if (place.types[0] == "bank") {
-      this.listdata.bank.push(place);
+      this.listdata.bank[i] = place;
     }
-    // console.log(place);
-    placeLoc = place.geometry.location;
+    this.places[i] = place;
     BriMap.marker[i] = new google.maps.Marker({
       map: BriMap.map,
       position: place.geometry.location,
@@ -37,14 +37,36 @@ var BriMap = {
       {latitude: this.lattitude, longitude: this.longitude},
       {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng()}
     ));
-    BriMap.setContent[place.id] = place.name + "<br />" +
-      place.formatted_address + "<br />" +
+    cs = rand(1, 50);
+    par = rand(1, 2);
+    BriMap.setContent[place.id] = '<h5>' + place.name + '</h5>'
+      + place.formatted_address + "<br />" +
       "Jarak: " + (k >= 1000 ? parseFloat(k / 1000).toFixed(2) + " Km" : k + " m")
+      + '<br />'
+      + (
+        place.types[0] == "atm"
+        ? "Parkir ATM tersedia" :
+        (
+          date("H") > 23
+          ? "Bank sudah tutup, silahkan cek kembali senin-jumat pukul 08:00 - 15:00"
+          : "Antrian Customer Services: " + cs + " "
+          + "estimasi Pukul " + date("H:i:s", strtotime("+1 Hour")) + ", "
+          + "Parkir mobil lantai " + par + " tersedia, " + rand(2, 6) + " slot tersedia."
+          + "<br />"
+          + 'Book expiry ' + date("H:i:s", strtotime("+15 Minutes"))
+          + "<br />"
+          + "<a onclick='BriBook.bookcs(" + cs + "," + par + ", " + i + ")' class='btn btn-primary btn-sm'>book CS and parking</a> | "
+          + "<a onclick='BriBook.book(" + par + ", " + i + ")' "
+          + "class='btn btn-success btn-sm'>book parking</a>")
+        )
       ;
     google.maps.event.addListener(BriMap.marker[i], 'click', function () {
-      BriMap.infowindow.setContent(BriMap.setContent[place.id]);
-      BriMap.infowindow.open(BriMap.map, this);
+      BriMap.clickmarker(i, place.id);
     });
+  },
+  clickmarker: function (i, id) {
+    BriMap.infowindow.setContent(BriMap.setContent[id]);
+    BriMap.infowindow.open(BriMap.map, BriMap.marker[i]);
   },
   init: function () {
     if (navigator.geolocation) {
@@ -85,17 +107,15 @@ var BriMap = {
                   }
                   for (g in BriMap.listdata.bank) {
                     $("#listmap")
-                      .append("<h5>" + BriMap.listdata.bank[g].name + "</h5>"
-                        + "<p>" + BriMap.listdata.bank[g].formatted_address + "</p>"
-                        + "<p>Jarak: </p>"
-                        + "<hr />");
+                      .append("<div onclick='BriMap.clickmarker(" + g + ", " + '"' + BriMap.listdata.bank[g].id + '"' + ");'>"
+                        + BriMap.setContent[BriMap.listdata.bank[g].id]
+                        + "<div>");
                   }
                   for (g in BriMap.listdata.atm) {
                     $("#listmap")
-                      .append("<h5>" + BriMap.listdata.atm[g].name + "</h5>"
-                        + "<p>" + BriMap.listdata.atm[g].formatted_address + "</p>"
-                        + "<p>Jarak: </p>"
-                        + "<hr />");
+                      .append("<div onclick='BriMap.clickmarker(" + g + ", " + '"' + BriMap.listdata.atm[g].id + '"' + ");'>"
+                        + BriMap.setContent[BriMap.listdata.atm[g].id]
+                        + "<div>");
                   }
                 }
               }
@@ -125,6 +145,7 @@ var BriMap = {
         } else {
         document.getElementById('locationInfo').innerHTML = 'Geolocation is not supported.';
       }
-    },
+    }
+  ,
 }
 

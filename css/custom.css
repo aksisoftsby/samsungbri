@@ -7,16 +7,15 @@
 #idsplash .container img{
   vertical-align: middle;
 }
-#idmaps .container{
+#idbook .container, #idmaps .container{
   background: url('../img/adsKXLw.png') top center no-repeat;
   height: 700px;
 }
-#idmaps .wrapper {    
+#idbook .wrapper, #idmaps .wrapper {    
   margin-top: 20px;
   margin-bottom: 10px;
 }
-
-#idmaps .container .wrapper .row {
+#idbook .container .wrapper .row, #idmaps .container .wrapper .row {
   max-width: 420px;
   padding: 30px 38px 66px;
   margin: 0 auto;
@@ -32,6 +31,15 @@
   margin-top: 10px;
   height: 250px;
   overflow: scroll;
+}
+#listmap div {
+  border-bottom: 1px solid #d0d0ff;
+  font-size: 12px;
+}
+#listmap div h5{
+  font-size: 13px;
+  font-weight: bold;
+  margin: 5px 0 0;
 }
 
 #idhome .container{
