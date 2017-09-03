@@ -8,7 +8,19 @@ var BriMap = {
   infowindow: {},
   setContent: {},
   marker: {},
+  listdata: {
+    me: [],
+    bank: [],
+    atm: []
+  },
   createMarker: function (place, i) {
+    console.log(place);
+    if (place.types[0] == "atm") {
+      this.listdata.atm.push(place);
+    }
+    if (place.types[0] == "bank") {
+      this.listdata.bank.push(place);
+    }
     console.log(place);
     placeLoc = place.geometry.location;
     BriMap.marker[i] = new google.maps.Marker({
@@ -69,8 +81,21 @@ var BriMap = {
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
                   // console.log(results);
                   for (var i = 0; i < results.length; i++) {
-                    var place = results[i];
                     BriMap.createMarker(results[i], i);
+                  }
+                  for (g in BriMap.listdata.bank) {
+                    $("#listmap")
+                      .append("<h5>" + BriMap.listdata.bank[g].name + "</h5>"
+                        + "<p>" + BriMap.listdata.bank[g].formatted_address + "</p>"
+                        + "<p>Jarak: </p>"
+                        + "<hr />");
+                  }
+                  for (g in BriMap.listdata.atm) {
+                    $("#listmap")
+                      .append("<h5>" + BriMap.listdata.atm[g].name + "</h5>"
+                        + "<p>" + BriMap.listdata.atm[g].formatted_address + "</p>"
+                        + "<p>Jarak: </p>"
+                        + "<hr />");
                   }
                 }
               }

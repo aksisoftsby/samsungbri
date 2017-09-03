@@ -26,7 +26,12 @@
 
 #map{
   width: 100%;
-  height: 500px;
+  height: 250px;
+}
+#listmap{
+  margin-top: 10px;
+  height: 250px;
+  overflow: scroll;
 }
 
 #idhome .container{
