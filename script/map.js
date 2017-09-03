@@ -14,14 +14,14 @@ var BriMap = {
     atm: []
   },
   createMarker: function (place, i) {
-    console.log(place);
+    // console.log(place);
     if (place.types[0] == "atm") {
       this.listdata.atm.push(place);
     }
     if (place.types[0] == "bank") {
       this.listdata.bank.push(place);
     }
-    console.log(place);
+    // console.log(place);
     placeLoc = place.geometry.location;
     BriMap.marker[i] = new google.maps.Marker({
       map: BriMap.map,
@@ -67,17 +67,17 @@ var BriMap = {
               map: BriMap.map,
               position: {lat: BriMap.lattitude, lng: BriMap.longitude},
             });
-            var request = {
-              location: lokasinasabah,
-              radius: '1000',
-              language: "id",
-              query: "'BANK BRI' or 'ATM BRI'"
-            };
             BriMap.infowindow = new google.maps.InfoWindow();
             service = new google.maps.places.PlacesService(BriMap.map);
             // service.nearbySearch(request,
-            service.textSearch(request,
+            service.textSearch({
+              location: lokasinasabah,
+              radius: '1000',
+              language: "id",
+              query: "'BANK BRI' 'ATM BRI'"
+            },
               function (results, status) {
+                console.log(status);
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
                   // console.log(results);
                   for (var i = 0; i < results.length; i++) {
